@@ -13,7 +13,7 @@ type controller struct {
 }
 
 // Setup connection
-func Setup(m *http.servema, log *zap.SugaredLogger) {
+func Setup(m *http.ServeMux, log *zap.SugaredLogger) {
 	ctrl := controller{log}
 
 	m.HandleFunc("/", ctrl.Root)
