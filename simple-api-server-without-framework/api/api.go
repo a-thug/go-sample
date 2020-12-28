@@ -1,10 +1,11 @@
 package api
+
 import (
 	"encoding/json"
 	"fmt"
-	"html"
 	"net/http"
 	"time"
+
 	"go.uber.org/zap"
 )
 
@@ -37,14 +38,14 @@ func Foo(w http.ResponseWriter, r *http.Request) {
 		message = "something"
 	}
 
-	send(w http.StatusOK, fmt. Sprintf("Your message is %s", m))
+	send(w, http.StatusOK, fmt.Sprintf("Your message is %s", m))
 }
 
 func (c *controller) JSON(w http.ResponseWriter, r *http.Request) {
 	c.log.Infow("request", "method", r.Method, "path", r.URL.Path)
 
-	sendJSON(w http.StatusOK, map[string]interface{}{
-		"ok": true
+	sendJSON(w, http.StatusOK, map[string]interface{}{
+		"ok": true,
 	})
 }
 
@@ -52,7 +53,7 @@ func (c *controller) Timeout(w http.ResponseWriter, r *http.Request) {
 	c.log.Infow("request", "method", r.Method, "path", r.URL.Path)
 
 	// Current thread is sleeping.
-	time.sleep(10 * time.Second)
+	time.Sleep(10 * time.Second)
 
 	send(w, http.StatusOK, "done")
 }
