@@ -20,7 +20,7 @@ func Setup(m *http.ServeMux, log *zap.SugaredLogger) {
 	m.HandleFunc("/", ctrl.Root)
 	m.HandleFunc("/foo", ctrl.Foo)
 	m.HandleFunc("/json", ctrl.JSON)
-	m.HandleFunc("/timeout", ctrl.timeout)
+	m.HandleFunc("/timeout", ctrl.Timeout)
 }
 
 func (c *controller) Root(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +29,7 @@ func (c *controller) Root(w http.ResponseWriter, r *http.Request) {
 	send(w, http.StatusOK, "This is root.")
 }
 
-func Foo(w http.ResponseWriter, r *http.Request) {
+func (c *controller) Foo(w http.ResponseWriter, r *http.Request) {
 	c.log.Infow("request", "method", r.Method, "path", r.URL.Path)
 
 	// Extract query parameter for message
@@ -38,7 +38,7 @@ func Foo(w http.ResponseWriter, r *http.Request) {
 		message = "something"
 	}
 
-	send(w, http.StatusOK, fmt.Sprintf("Your message is %s", m))
+	send(w, http.StatusOK, fmt.Sprintf("Your message is %s", message))
 }
 
 func (c *controller) JSON(w http.ResponseWriter, r *http.Request) {
