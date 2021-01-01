@@ -38,7 +38,7 @@ func (c *controller) Foo(w http.ResponseWriter, r *http.Request) {
 		message = "something"
 	}
 
-	send(w, http.StatusOK, fmt.Sprintf("Your message is %s", message))
+	send(w, http.StatusOK, fmt.Sprintf("Your message is %s.", message))
 }
 
 func (c *controller) JSON(w http.ResponseWriter, r *http.Request) {
