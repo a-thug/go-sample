@@ -23,6 +23,8 @@ jobs:
 
     - name: Get dependencies
       run: |
+        git config --global url."https://${{ secrets.GO_MODULES_TOKEN }}:x-oauth-basic@github.com/a-thug".insteadOf "https://github.com/norabal"
+        export GOPRIVATE="github.com/a-thug"
         go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
