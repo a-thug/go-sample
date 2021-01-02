@@ -30,6 +30,13 @@ func newUserController(secret string) *userController {
 	return &userController{secret, make(map[int64]*user), 0}
 }
 
+type userInfo struct {
+	ID        int64     `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time ` json:"updated_at"`
+}
 type userCreateRequest struct {
 	Name     string `json:"name" validate:"required,gte=1"`
 	Email    string `json:"email" validate: "required,email"`
@@ -46,7 +53,7 @@ func (uc *userController) Create(c echo.Context) error {
 	if err := c.Bind(r); err != nil {
 		return err
 	}
-	if err := c.validate(r); err != nil {
+	if err := c.Validate(r); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"error": err.Error(),
 		})
@@ -58,6 +65,16 @@ func (uc *userController) Create(c echo.Context) error {
 	}
 
 	// NOT thread safe
+	uc.userIDCountter++
+	u := &user{
+		ID:           uc.userIDCountter,
+		Name:         r.Name,
+		Email:        r.Email,
+		PasswordHash: hash,
+		CreatedAt:    time.Now(),
+		UpdatedAt:    time.Time{},
+	}
+
 	uc.users[u.ID] = u
 
 	token, err := newJWT(uc.secret, u)
@@ -102,10 +119,10 @@ func (uc *userController) Get(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, userGetResponse{
 		User: userInfo{
-			ID:    u.ID,
-			Name:  u.Name,
-			Email: u.Email,
-			CreatedAt, u.CreatedAt,
+			ID:        u.ID,
+			Name:      u.Name,
+			Email:     u.Email,
+			CreatedAt: u.CreatedAt,
 			UpdatedAt: u.UpdatedAt,
 		},
 	})
@@ -144,7 +161,7 @@ func (uc *userController) Update(c echo.Context) error {
 	if err := c.Bind(r); err != nil {
 		return err
 	}
-	if err := c.validate(r); err != nil {
+	if err := c.Validate(r); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{
 			"error": err.Error(),
 		})
