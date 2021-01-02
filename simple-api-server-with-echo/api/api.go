@@ -1,4 +1,5 @@
 package api
+
 import (
 	"context"
 	"net/http"
@@ -12,10 +13,11 @@ import (
 	"github.com/labstack/gommon/log"
 )
 
+// Start starts API server
 func Start(secret string) {
 	e := echo.New()
 
-	e.Use(middleware.logger())
+	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
 	// Allows requests from any origin wth GET, HEAD, PUT, POST or DELETE method
@@ -33,7 +35,7 @@ func Start(secret string) {
 
 	// Restricted
 	r := e.Group("/api", middleware.JWTWithConfig(middleware.JWTConfig{
-		SigningKey: []byte(secret)
+		SigningKey: []byte(secret),
 	}))
 
 	r.GET("/users/:id", users.Get)
@@ -67,7 +69,7 @@ func root(c echo.Context) error {
 	return c.String(http.StatusOK, "This is root.")
 }
 
-type customeValidator struct {
+type customValidator struct {
 	validator *validator.Validate
 }
 
