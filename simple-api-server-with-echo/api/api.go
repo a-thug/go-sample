@@ -23,7 +23,7 @@ func Start(secret string) {
 	// Allows requests from any origin wth GET, HEAD, PUT, POST or DELETE method
 	e.Use(middleware.CORS())
 
-	e.validator = &customValidator{validator: validator.New()}
+	e.Validator = &customValidator{validator: validator.New()}
 
 	e.Logger.SetLevel(log.INFO)
 
@@ -40,7 +40,6 @@ func Start(secret string) {
 
 	r.GET("/users/:id", users.Get)
 	r.PATCH("users/:id", users.Update)
-	r.DELETE("/users/:id", users.Delete)
 
 	// Wait for graceful shutdown with 10 sec
 	go func() {
