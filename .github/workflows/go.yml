@@ -35,7 +35,6 @@ jobs:
     
     - name: Get dependencies for simple-api-server-with-echo
       run: |
-        export GO111MODULE=on
         cd simple-api-server-with-echo && go get -v -t -d ./...
 
     - name: Build for simple-api-server-with-echo
