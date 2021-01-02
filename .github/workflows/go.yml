@@ -39,6 +39,7 @@ jobs:
     
     - name: Get dependencies for simple-api-server-with-echo
       run: |
+        export GO111MODULE=on
         cd simple-api-server-with-echo && go get -v -t -d ./...
         if [ -f Gopkg.toml ]; then
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
