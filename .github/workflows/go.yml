@@ -26,10 +26,6 @@ jobs:
         git config --global url."https://${{ secrets.GO_MODULES_TOKEN }}:x-oauth-basic@github.com/a-thug".insteadOf "https://github.com/a-thug"
         export GOPRIVATE="github.com/a-thug"
         cd simple-api-server-without-framework && go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
 
     - name: Build for simple-api-server-without-framework
       run: cd simple-api-server-without-framework && go build -v ./...
@@ -40,11 +36,7 @@ jobs:
     - name: Get dependencies for simple-api-server-with-echo
       run: |
         export GO111MODULE=on
-        cd simple-api-server-with-echo && go mod init && go get -v -t -d ./...
-        if [ -f Gopkg.toml ]; then
-            curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
-            dep ensure
-        fi
+        cd simple-api-server-with-echo && go get -v -t -d ./...
 
     - name: Build for simple-api-server-with-echo
       run: cd simple-api-server-with-echo && go build -v ./...
