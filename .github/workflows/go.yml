@@ -21,6 +21,19 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
     
+    
+    - name: Get dependencies for simple-api-server-without-framework
+      run: |
+        git config --global url."https://${{ secrets.GO_MODULES_TOKEN }}:x-oauth-basic@github.com/a-thug".insteadOf "https://github.com/a-thug"
+        export GOPRIVATE="github.com/a-thug"
+        cd simple-api-server-without-framework && go get -v -t -d ./...
+
+    - name: Build for simple-api-server-without-framework
+      run: cd simple-api-server-without-framework && go build -v ./...
+
+    - name: Test for simple-api-server-without-framework
+      run: cd simple-api-server-without-framework && go test -v ./...
+    
     - name: Get dependencies for simple-api-server-with-echo
       run: |
         git config --global url."https://${{ secrets.GO_MODULES_TOKEN }}:x-oauth-basic@github.com/a-thug".insteadOf "https://github.com/a-thug"
