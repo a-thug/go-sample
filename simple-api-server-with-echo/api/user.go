@@ -82,7 +82,7 @@ func (uc *userController) Create(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, userCreateResponse{
+	return c.JSON(http.StatusCreated, userCreateResponse{
 		User: userInfo{
 			ID:        u.ID,
 			Name:      u.Name,
