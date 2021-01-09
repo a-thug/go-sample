@@ -40,7 +40,7 @@ type userInfo struct {
 type userCreateRequest struct {
 	Name     string `json:"name" validate:"required,gte=1"`
 	Email    string `json:"email" validate: "required,email"`
-	Password string `json:"password" validate:"required, gte=8"`
+	Password string `json:"password" validate:"required,gte=8"`
 }
 
 type userCreateResponse struct {
