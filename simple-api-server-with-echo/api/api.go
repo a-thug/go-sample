@@ -40,6 +40,7 @@ func Start(secret string) {
 
 	r.GET("/users/:id", users.Get)
 	r.PATCH("users/:id", users.Update)
+	r.DELETE("users/:id", users.Delete)
 
 	// Wait for graceful shutdown with 10 sec
 	go func() {
