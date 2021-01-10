@@ -196,6 +196,31 @@ func (uc *userController) Update(c echo.Context) error {
 	})
 }
 
+func (uc *userController) Delete(c echo.Context) error {
+	idParam := c.Param("id")
+
+	id, _ := strconv.ParseInt(idParam, 10, 64)
+
+	session := getSession(c)
+	if session.ID != id {
+		return c.JSON(http.StatusUnauthorized, echo.Map{
+			"error": "access denied",
+		})
+	}
+
+	u, ok := uc.users[id]
+	if !ok {
+		return c.JSON(http.StatusNotFound, echo.Map{
+			"error": fmt.Sprintf("could not find user id %d", id),
+		})
+	}
+
+	// Delete
+	uc.users[u.ID] = nil
+
+	return c.JSON(http.StatusNoContent, nil)
+}
+
 func newJWT(secret string, u *user) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id":    u.ID,
