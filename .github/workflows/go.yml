@@ -42,3 +42,6 @@ jobs:
 
     - name: Build for simple-api-server-with-echo
       run: cd simple-api-server-with-echo && go build -v ./...
+    
+    - name: Test for simple-api-server-with-echo
+      run: cd simple-api-server-with-echo && go test -v ./...
