@@ -51,8 +51,8 @@ func helloHandler(c *gin.Context) {
 	claims := jwt.ExtractClaims(c)
 
 	c.JSON(200, gin.H{
-		"userID": claims["id"],
-		"claims": claims,
-		"text":   "Hello World.",
+		"user_id": claims["user_id"],
+		"claims":  claims,
+		"text":    "Hello World.",
 	})
 }
